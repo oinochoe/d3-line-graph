@@ -23,16 +23,37 @@ var line = d3.line().x(function (d) {
   return y(d.value);
 });
 
+var minValue = 0;
+var maxValue = 0;
+
 var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.json("data.json", function (error, data) {
   if (error) throw error;
-  
+
   data.forEach(function (d) {
     d.days = parseTime(d.days);
     d.value = +d.value;
   });
-  
+
+  function getMax(arr, prop) {
+      var max;
+      for (var i=0 ; i<arr.length ; i++) {
+          if (!max || parseInt(arr[i][prop]) > parseInt(max[prop]))
+              max = arr[i];
+      }
+      return max;
+  }
+
+  function getMin(arr, prop) {
+    var min;
+    for (var i=0 ; i<arr.length ; i++) {
+        if (!min || parseInt(arr[i][prop]) < parseInt(min[prop]))
+            min = arr[i];
+    }
+    return min;
+}
+
   x.domain(d3.extent(data, function (d) {
     return d.days;
   }));
@@ -52,9 +73,9 @@ d3.json("data.json", function (error, data) {
   .attr("id", "graph-gradient")
   .attr("gradientUnits", "userSpaceOnUse")
   .attr("x1", 0)
-  .attr("y1", y(768000))
+  .attr("y1", y(Math.min.apply(null, d)))
   .attr("x2", 0)
-  .attr("y2", y(780000))
+  .attr("y2", y(Math.max.apply(null, d)))
   .selectAll("stop")
   .data([
     { offset: "0%", color: "blue" },
