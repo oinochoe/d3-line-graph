@@ -53,9 +53,9 @@ d3.json("data.json", function (error, data) {
   .attr("id", "graph-gradient")
   .attr("gradientUnits", "userSpaceOnUse")
   .attr("x1", 0)
-  .attr("y1", y(getMax(data, "value")))
+  .attr("y1", y(getMax(data, "value").value))
   .attr("x2", 0)
-  .attr("y2", y(getMin(data, "value")))
+  .attr("y2", y(getMin(data, "value").value))
   .selectAll("stop")
   .data([
     { offset: "0%", color: "blue" },
@@ -84,6 +84,8 @@ d3.json("data.json", function (error, data) {
       }
       return min;
   }
+
+  console.log(getMax(data, "value").value, getMin(data, "value").value)
 
   var focus = g.append("g").attr("class", "focus").style("display", "none");
 
