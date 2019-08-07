@@ -1,72 +1,94 @@
 var svg = d3.select("svg"),
+   // basic margin
     margin = {
       top: 20,
       right: 120,
       bottom: 30,
       left: 140
     },
+    // default width, height setting
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom;
 
+// time Parsing style
 var parseTime = d3.timeParse("%Y-%m-%d");
 
+// bisectDate(tracking ball when you move)
 bisectDate = d3.bisector(function (d) {
   return d.days;
 }).left;
 
+// range setting..
 var x = d3.scaleTime().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
+// line value setting..
 var line = d3.line().x(function (d) {
   return x(d.days);
 }).y(function (d) {
   return y(d.value);
 });
 
+// g = svg's group and positioning
 var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// get data from json (you can change the extracting method)
 d3.json("data.json", function (error, data) {
   if (error) throw error;
 
+  // data parsing time and value setting
   data.forEach(function (d) {
     d.days = parseTime(d.days);
     d.value = +d.value;
   });
 
-
+  // days
   x.domain(d3.extent(data, function (d) {
     return d.days;
   }));
 
+  // value
   y.domain([d3.min(data, function (d) {
     return d.value;
   }) / 1.005, d3.max(data, function (d) {
     return d.value;
   }) * 1.005]);
 
+  // Add designing and drawing
   g.append("g").attr("class", "axis axis--x").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x).tickFormat(d3.timeFormat("%m/%d")));
-  g.append("g").attr("class", "axis axis--y").call(d3.axisLeft(y));
-  
+  g.append("g").attr("class", "axis axis--y").call(make_y_gridlines().tickSize(-width));
   g.append("path").datum(data).attr("class", "line").attr("d", line);
-
+  // GRADIENT START
   g.append("linearGradient")
   .attr("id", "graph-gradient")
   .attr("gradientUnits", "userSpaceOnUse")
   .attr("x1", 0)
-  .attr("y1", y(getMin(data, "value").value))
+  .attr("y1", y(getMin(data, "value").value)) // minValue
   .attr("x2", 0)
-  .attr("y2", y(getMax(data, "value").value))
-  .selectAll("stop")
+  .attr("y2", y(getMax(data, "value").value)) // maxValue
+  .selectAll("stop")                          // setting stop
   .data([
     { offset: "0%", color: "blue" },
     { offset: "50%", color: "white" },
     { offset: "100%", color: "red" }
   ])
   .enter()
-  .append("stop")
-  .attr("offset", d => d.offset)
-  .attr("stop-color", d => d.color);
+  .append("stop")                             // stop Positioning
+  .attr("offset", d => d.offset)              // offset setting
+  .attr("stop-color", d => d.color);          // stop color
+  // GRADIENT END
 
+  /*
+   * Function List
+   */
+
+   // gridLines each 5 lens
+  function make_y_gridlines() {
+    return d3.axisLeft(y)
+        .ticks(5)
+  }
+
+  // getMax value from arrays
   function getMax(arr, prop) {
       var max;
       for (var i=0 ; i<arr.length ; i++) {
@@ -76,6 +98,7 @@ d3.json("data.json", function (error, data) {
       return max;
   }
 
+  // getMin value from arrays
   function getMin(arr, prop) {
       var min;
       for (var i=0 ; i<arr.length ; i++) {
@@ -85,11 +108,10 @@ d3.json("data.json", function (error, data) {
       return min;
   }
 
-  console.log(getMax(data, "value").value, getMin(data, "value").value)
-
+  // focusing position (Mouse over, move, touch over and move)
   var focus = g.append("g").attr("class", "focus").style("display", "none");
 
-  focus.append("circle").attr("r", 7.5);
+  focus.append("circle").attr("r", 1.5);
   focus.append("text").attr("x", 15).attr("dy", ".3em");
   
   svg.append("rect").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
