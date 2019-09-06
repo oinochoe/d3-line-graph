@@ -2,18 +2,15 @@ var drawgraph = (function(priceData) {
 
   // init
   drawgraph.init = function () {
-    if(d3.select("svg").length > 0) {
-      d3.select("svg").remove();
-    }
     drawgraph.draw();
   }
 
-  // drawgraph.remove = function () {
-  //   document.querySelector('svg').remove();
-  // }
-
   drawgraph.draw = function () {
     // default
+    if(d3.select("svg") !== null) {
+      d3.select("svg").remove();
+    }
+
     var margin = { top: 20, right: 20, bottom: 30, left: 40}
     var width = 1000 - margin.left - margin.right;
     var height = 500 - margin.top - margin.bottom;
@@ -150,14 +147,21 @@ var drawgraph = (function(priceData) {
 
     function mousemove() {
       var x0 = x.invert(d3.mouse(this)[0]),
-        i = bisectDate(priceData, x0, 1),
-        d0 = priceData[i - 1],
-        d1 = priceData[i],
-        d = x0 - d0.days > d1.days - x0 ? d1 : d0;
-        focus.attr("transform", "translate(" + x(d.days) + "," + y(d.value) + ")");
-        focus.select("text").text(function () {
+      i = bisectDate(priceData, x0, 1),
+      d0 = priceData[i - 1],
+      d1 = priceData[i],
+      d = x0 - d0.days > d1.days - x0 > 0 ? d1 : d0;
+      focus.attr("transform", "translate(" + x(d.days) + "," + y(d.value) + ")");
+      focus.select("text").text(function () {
         return d.value.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
       });
+    }
+
+    function isEmpty(data) {
+      if (typeof (data) == 'string') {
+          data = data.trim();
+      }
+      return (data == null || data == '' || data == undefined);
     }
 
     // resize function
