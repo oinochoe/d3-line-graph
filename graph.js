@@ -149,12 +149,14 @@ var drawgraph = (function(priceData) {
       var x0 = x.invert(d3.mouse(this)[0]),
       i = bisectDate(priceData, x0, 1),
       d0 = priceData[i - 1],
-      d1 = priceData[i],
-      d = x0 - d0.days > d1.days - x0 > 0 ? d1 : d0;
-      focus.attr("transform", "translate(" + x(d.days) + "," + y(d.value) + ")");
-      focus.select("text").text(function () {
-        return d.value.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-      });
+      d1 = priceData[i];
+      if(typeof d1 !== "undefined") {
+        var d = x0 - d0.days > d1.days - x0 > 0 ? d1 : d0;
+        focus.attr("transform", "translate(" + x(d.days) + "," + y(d.value) + ")");
+        focus.select("text").text(function () {
+          return d.value.toString().replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+        });
+      }
     }
 
     function isEmpty(data) {
