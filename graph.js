@@ -28,8 +28,8 @@ var line = d3.line().x(function (d) {
 // g = svg's group and positioning
 var g = svg.append("g").classed("group", true).attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// get Data
-var data = [{
+// get priceData
+var priceData = [{
   "days": "2019-07-02",
   "value": 72
 }, {
@@ -38,28 +38,37 @@ var data = [{
 }, {
   "days": "2019-07-04",
   "value": 720
+}, {
+  "days": "2019-07-05",
+  "value": 720
+}, {
+  "days": "2019-07-06",
+  "value": 720
+}, {
+  "days": "2019-07-07",
+  "value": 720
 }]
 
-// data binding
-data.forEach(function (d) {
+// priceData binding
+priceData.forEach(function (d) {
   d.days = parseTime(d.days);
   d.value = +d.value;
 });
 
 // days
-x.domain(d3.extent(data, function (d) {
+x.domain(d3.extent(priceData, function (d) {
   return d.days;
 }));
 
 // value
-y.domain([d3.min(data, function (d) {
+y.domain([d3.min(priceData, function (d) {
   return d.value;
-}) / 1.005, d3.max(data, function (d) {
+}) / 1.005, d3.max(priceData, function (d) {
   return d.value;
 }) * 1.005]);
 
 // Add designing and drawing
-g.append("g").attr("class", "axis axis--x").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x).tickFormat(d3.timeFormat("%m/%d")));
+g.append("g").attr("class", "axis axis--x").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x).ticks(5).tickFormat(d3.timeFormat("%m/%d")));
 g.append("g").attr("class", "axis axis--y").call(d3.axisLeft(y).tickFormat(d3.format(",.1s")));
 
 // d3 label per unit
@@ -81,15 +90,15 @@ if (lasttext !== "" && lasttext !== /[0-9]/g) {
 }
 
 //call(make_y_gridlines().tickSize(-width));
-g.append("path").datum(data).attr("class", "line").attr("d", line);
+g.append("path").datum(priceData).attr("class", "line").attr("d", line);
 // GRADIENT START
 g.append("linearGradient")
   .attr("id", "graph-gradient")
   .attr("gradientUnits", "userSpaceOnUse")
   .attr("x1", 0)
-  .attr("y1", y(getMin(data, "value").value)) // minValue
+  .attr("y1", y(getMin(priceData, "value").value)) // minValue
   .attr("x2", 0)
-  .attr("y2", y(getMax(data, "value").value)) // maxValue
+  .attr("y2", y(getMax(priceData, "value").value)) // maxValue
   .selectAll("stop")                          // setting stop
   .data([
     { offset: "0%", color: "blue" },
@@ -146,9 +155,9 @@ svg.append("rect").attr("transform", "translate(" + margin.left + "," + margin.t
 
 function mousemove() {
   var x0 = x.invert(d3.mouse(this)[0]),
-    i = bisectDate(data, x0, 1),
-    d0 = data[i - 1],
-    d1 = data[i],
+    i = bisectDate(priceData, x0, 1),
+    d0 = priceData[i - 1],
+    d1 = priceData[i],
     d = x0 - d0.days > d1.days - x0 ? d1 : d0;
     focus.attr("transform", "translate(" + x(d.days) + "," + y(d.value) + ")");
     focus.select("text").text(function () {
