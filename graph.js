@@ -85,8 +85,7 @@ var drawgraph = (function(priceData) {
     //call(make_y_gridlines().tickSize(-width));
     g.append("path").datum(priceData).attr("class", "line").attr("d", line);
     // GRADIENT START
-    g.append("defs")
-      .append("linearGradient")
+    g.append("linearGradient")
       .attr("id", "graph-gradient")
       .attr("gradientUnits", "userSpaceOnUse")
       .attr("x1", 0)
