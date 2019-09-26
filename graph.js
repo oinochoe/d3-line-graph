@@ -94,9 +94,9 @@ var drawgraph = (function(priceData) {
       .attr("y2", y(getMax(priceData, "value").value)) // maxValue
       .selectAll("stop")                          // setting stop
       .data([
-        { offset: "0%", color: "#0000ff" },
-        { offset: "50%", color: "#ffffff" },
-        { offset: "100%", color: "#ff0000" }
+        { offset: "1%", color: "#0000ff" },
+        { offset: "40%", color: "#ffffff" },
+        { offset: "99%", color: "#ff0000" }
       ])
       .enter()
       .append("stop")                             // stop Positioning

@@ -5,9 +5,9 @@ body { background-color: #000000}
 .axis { font: 10px sans-serif; } 
 .axis path,
 .axis line { fill: none; stroke: #D4D8DA; stroke-width: 2px; shape-rendering: crispEdges; } 
-.line { fill: none; stroke: url(#graph-gradient); stroke-width: 12px; } 
+.line { fill: none; stroke: url(#graph-gradient); stroke-width: 2px; } 
 .overlay { fill: none; pointer-events: all; } 
-.focus circle { fill: #000; stroke: #fff; stroke-width: 2px; } 
+.focus circle { fill: #000; stroke: #fff; stroke-width:2px; } 
 .hover-line { stroke: #fff; stroke-width: 2px; stroke-dasharray: 3, 3; } 
 text{fill:white; -webkit-user-select: none; user-select:none; font-size:2em; }
 .unit{color:white; text-align: right;}
