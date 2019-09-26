@@ -95,7 +95,7 @@ var drawgraph = (function(priceData) {
       .selectAll("stop")                          // setting stop
       .data([
         { offset: "0%", color: "blue" },
-        { offset: "50%", color: "white" },
+        { offset: "51%", color: "white" },
         { offset: "100%", color: "red" }
       ])
       .enter()
