@@ -107,7 +107,7 @@ var drawgraph = (function(priceData) {
     if(d3.select('.line')._groups[0][0].nextElementSibling.y1.animVal.value === d3.select('.line')._groups[0][0].nextElementSibling.y2.animVal.value) {
       d3.select('.line').style.stroke="white";
       for(var i = 0; d3.select('.line')._groups[0][0].nextSibling.children.length > i; i++ ) {
-        d3.select('.line')._groups[0][0].nextSibling.children[i].__data__.color="blue";
+        d3.select('.line')._groups[0][0].nextSibling.children[i].__data__.color="white";
       }
     }
     // GRADIENT END
