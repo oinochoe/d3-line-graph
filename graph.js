@@ -89,9 +89,9 @@ var drawgraph = (function(priceData) {
       .attr("id", "graph-gradient")
       .attr("gradientUnits", "userSpaceOnUse")
       .attr("x1", 0)
-      .attr("y1", y(getMin(priceData, "value").value - 1)) // minValue
+      .attr("y1", y(getMin(priceData, "value").value)) // minValue
       .attr("x2", 0)
-      .attr("y2", y(getMax(priceData, "value").value + 1)) // maxValue
+      .attr("y2", y(getMax(priceData, "value").value)) // maxValue
       .selectAll("stop")                          // setting stop
       .data([
         { offset: "0%", color: "#0000ff" },
@@ -102,6 +102,14 @@ var drawgraph = (function(priceData) {
       .append("stop")                             // stop Positioning
       .attr("offset", d => d.offset)              // offset setting
       .attr("stop-color", d => d.color);          // stop color
+    
+    // if same both minValue and maxValue
+    if(d3.select('.line')._groups[0][0].nextElementSibling.y1.animVal.value === d3.select('.line')._groups[0][0].nextElementSibling.y2.animVal.value) {
+      d3.select('.line').style.stroke="white";
+      for(var i = 0; d3.select('.line')._groups[0][0].nextSibling.children.length > i; i++ ) {
+        d3.select('.line')._groups[0][0].nextSibling.children[i].__data__.color="blue";
+      }
+    }
     // GRADIENT END
     /*
     * Function List
