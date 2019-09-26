@@ -89,9 +89,9 @@ var drawgraph = (function(priceData) {
       .attr("id", "graph-gradient")
       .attr("gradientUnits", "userSpaceOnUse")
       .attr("x1", 0)
-      .attr("y1", y(getMin(priceData, "value").value - .2)) // minValue
+      .attr("y1", y(getMin(priceData, "value").value - 1)) // minValue
       .attr("x2", 0)
-      .attr("y2", y(getMax(priceData, "value").value + .2)) // maxValue
+      .attr("y2", y(getMax(priceData, "value").value + 1)) // maxValue
       .selectAll("stop")                          // setting stop
       .data([
         { offset: "0%", color: "#0000ff" },
