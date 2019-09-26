@@ -85,7 +85,8 @@ var drawgraph = (function(priceData) {
     //call(make_y_gridlines().tickSize(-width));
     g.append("path").datum(priceData).attr("class", "line").attr("d", line);
     // GRADIENT START
-    g.append("linearGradient")
+    g.append("defs")
+      .append("linearGradient")
       .attr("id", "graph-gradient")
       .attr("gradientUnits", "userSpaceOnUse")
       .attr("x1", 0)
@@ -95,7 +96,7 @@ var drawgraph = (function(priceData) {
       .selectAll("stop")                          // setting stop
       .data([
         { offset: "0%", color: "#0000ff" },
-        // { offset: "50%", color: "#ffffff" },
+        { offset: "50%", color: "#ffffff" },
         { offset: "100%", color: "#ff0000" }
       ])
       .enter()
