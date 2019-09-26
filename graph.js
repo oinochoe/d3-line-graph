@@ -62,7 +62,7 @@ var drawgraph = (function(priceData) {
 
     // Add designing and drawing
     g.append("g").attr("class", "axis axis--x").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x).ticks(5).tickFormat(d3.timeFormat("%m/%d")));
-    g.append("g").attr("class", "axis axis--y").call(d3.axisLeft(y).tickFormat(d3.format(",.1s")));
+    g.append("g").attr("class", "axis axis--y").call(d3.axisLeft(y).ticks(3).tickFormat(d3.format(",.1s")));
 
     // d3 label per unit
     var lasttext;
